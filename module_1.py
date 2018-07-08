@@ -1,0 +1,5 @@
+foods = input("Enter food eaten in last 24 hrs: ")
+print(foods)
+b1 = "eggs" in foods.lower()
+b2 = "milk" in foods.lower()
+print('It is',b1,'that',foods,'contains eggs)
