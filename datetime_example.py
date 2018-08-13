@@ -7,6 +7,10 @@ import datetime
 # date(year, month, day)
 # datetime
 # datetime(year, month, day, hour = 0, minute = 0, second = 0, microsecond = 0)
+# strftime()
+# timedelta
+# timedelta(weeks = 0, days = 0, hours = 0, minutes = 0, seconds = 0, milliseconds = 0, microseconds = 0)
+
 
 
 def main():
@@ -32,11 +36,16 @@ def main():
     dt = dt.replace(year = 2018)
     print(dt)
     t = datetime.time(hour = 1, minute = 23)
-    d = datetime.date(2018, 4, 20)
+    d = datetime.date(2018, month = 4,day = 20)
     dt = datetime.datetime.combine(d,t)
     print(dt)
     dt_today = datetime.datetime.today()
     print(dt_today)
+
+    my_day = datetime.date(2019, 3, 8)
+    today = datetime.date.today()
+    timedelta = my_day - today
+    print(timedelta)
 
 
 
