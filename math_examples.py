@@ -21,24 +21,33 @@ import random
 # Power
 # 3 ** 2 = 9
 
-l = [25, 34, 193, 2, 81, 26, 44]
 
 def is_even(n):
     return (n % 2) == 0
 
+
 def main():
-    for x in l:
-        print(is_even(x))
+    # l = [25, 34, 193, 2, 81, 26, 44]
+    # for x in l:
+    #     print(is_even(x))
+    #
+    # print(random.randint(1,10))     # prints rand int from [1-10] inclusive
+    # print(random.randrange(1,11))   # prints rand int from [1-10] inclusive/exclusive
+    # print(random.randrange(1,11,2)) # prints rand odd ints from [1-10]
+    #
+    # print(random.choice(l))         # pick random number from list 'l'
+    # print(random.shuffle(l))        # shuffles list 'l'
+    #
+    # print(1 ** (2 * 3) / 4 + 5)
 
-    print(random.randint(1,10))     # prints rand int from [1-10] inclusive
-    print(random.randrange(1,11))   # prints rand int from [1-10] inclusive/exclusive
-    print(random.randrange(1,11,2)) # prints rand odd ints from [1-10]
+    # Calculate bit resolution for 18bit ADC @ +/-10V
+    bits = 18
+    volt_range = 20
+    bit_res = volt_range / (2 ** bits) * 1000
+    print("Bit Resolution @ {} bits: {} mV".format(bits,bit_res))
 
-    print(random.choice(l))         # pick random number from list 'l'
-    print(random.shuffle(l))        # shuffles list 'l'
 
-    print(1 ** (2 * 3) / 4 + 5)
-if __name__=="__main__":
+if __name__ == "__main__":
     main()
 
 
