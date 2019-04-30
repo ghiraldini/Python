@@ -105,3 +105,31 @@ def main(toggl_file, internal_order):
 if __name__ == "__main__":
     main("Toggl_time_entries_2019-04-15_to_2019-04-21.csv", "Internal_Order_Modified.csv")
 
+# container
+# cat2 = {[TYPE] , [SAP_NUMBERS], [TIME_SPENT]}
+type_dict = {1:"31CHTE", 2:"31CHTE", 5:"31CHTE"}
+sap_list = [1,2,1,1,5]
+time_spent_list = [0,3,6,2,9]
+sap_hrs_dict = {}
+
+for k, v in type_dict.items():
+    sap_hrs_dict[k] = []
+
+idx = 0
+for sap_number in sap_list:
+    print(type_dict.get(sap_number), sap_number, time_spent_list[idx])
+    if sap_number not in sap_hrs_dict:
+        print("Project has not been charged yet - add to week charges")
+        sap_hrs_dict[sap_number] = [time_spent_list[idx]]
+    else:
+        print("Project already has charge - add new day of charges")
+        hrs_arr = []
+        for x in sap_hrs_dict[sap_number]:
+            hrs_arr.append(x)
+
+        hrs_arr.append(time_spent_list[idx])
+        sap_hrs_dict[sap_number] = hrs_arr
+
+    idx += 1
+
+print("")
