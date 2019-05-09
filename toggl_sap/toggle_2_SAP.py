@@ -18,8 +18,8 @@ class Toggl():
     def welcome_msg():
         print("Importing Toggle_2_SAP module :)")
 
-    # @staticmethod
-    def print_new_day(self, day, dayIdx):
+    @staticmethod
+    def print_new_day(day, dayIdx):
         print("--------------------------------------------------")
         print("PROJECTS WORKED ON: {}".format(day))
         print("--------------------------------------------------")
@@ -73,7 +73,7 @@ class Toggl():
             (h, m, s) = dur[idx[x]].split(":")
             if s_date[idx[x]] != s_date[idx[x-1]]:
                 dayIdx += 1
-                print_new_day(s_date[idx[x]], dayIdx)
+                self.print_new_day(s_date[idx[x]], dayIdx)
                 new_day_flag = True
                 tt = int(h) * 3600 + int(m) * 60 + int(s)
             else:
@@ -82,8 +82,8 @@ class Toggl():
 
             tt = self.print_proj_details(idx, x, proj, tt, sap_map, dayIdx, new_day_flag)
 
-    # @staticmethod
-    def map_projects(self, filename, sap_map):
+    @staticmethod
+    def map_projects(filename, sap_map):
         print("Mapping SAP")
         sap_arr = []
         type_arr = []
@@ -100,8 +100,8 @@ class Toggl():
 
     # SAP HEADERS
     # ActTyp    RecSaleOrd  RecItm  Rec.Order   Network SOp Spl A/AType WageType    AInd    M T W T F S S
-    # @staticmethod
-    def write_sap_output(self, out_file, sap_map):
+    @staticmethod
+    def write_sap_output(out_file, sap_map):
         with open(out_file, "w") as out:
             for k, v in sap_hrs_dict.items():
                 try:
