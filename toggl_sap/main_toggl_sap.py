@@ -6,8 +6,8 @@
 # Line 2 = Data
 
 import tkinter as tk
+import os
 from tkinter import filedialog
-from tkinter import Entry
 from tkinter import Label
 
 from toggle_2_SAP import Toggl
@@ -17,14 +17,14 @@ class Application(tk.Frame):
 
     def __init__(self, root):
         tk.Frame.__init__(self, root)
-        self.canvas = tk.Canvas(root, borderwidth=0, background="#ffffff")
+        self.canvas = tk.Canvas(root, width=600, height=800, borderwidth=1, background="#ffffff")
         self.frame = tk.Frame(self.canvas, background="#ffffff")
         self.vsb = tk.Scrollbar(root, orient="vertical", command=self.canvas.yview)
         self.canvas.configure(yscrollcommand=self.vsb.set)
 
         self.vsb.pack(side="right", fill="y")
         self.canvas.pack(side="left", fill="both", expand=True)
-        self.canvas.create_window((1, 10), window=self.frame, anchor="nw",
+        self.canvas.create_window((0, 0), window=self.frame, anchor="nw",
                                   tags="self.frame")
 
         self.frame.bind("<Configure>", self.on_frame_configure)
@@ -40,6 +40,7 @@ class Application(tk.Frame):
         self.txt = None
         self.label = None
         self.data_list = []
+        self.display_msg = "Waiting for input..."
         self.toggl_file = "Toggl_time_entries_2019-04-08_to_2019-04-14.csv"
         self.int_order_file = "Internal_Order_Modified.csv"
         self.output_file = "SAP_INPUT_TEST.csv"
@@ -48,13 +49,8 @@ class Application(tk.Frame):
     def create_widgets(self):
         self.winfo_toplevel().title("Toggl to SAP")
 
-        # self.label = Label(text="Output file name:", font=("Arial Bold", 12))
+        # self.label = Label(self.canvas, text="Waiting to upload...")
         # self.label.pack(side="top")
-        #
-        # # SAP Output file
-        # self.txt = Entry(root, width=24)
-        # self.txt.setvar("<Enter File Name>")
-        # self.txt.pack(side="top")
 
         # Load Button
         self.load = tk.Button(self)
@@ -78,9 +74,17 @@ class Application(tk.Frame):
                                                    filetypes=(("csv files", "*.csv"), ("all files", "*.*")))
         print("Reading toggl report...", root.filename)
 
-        # TODO: Strip csv from file and add SAP.csv
-        self.output_file = root.filename + "_SAP.csv"
+        self.output_file, ext = os.path.splitext(root.filename)
+        self.output_file += "_SAP.csv"
+        print("Creating SAP file...", self.output_file)
         self.tg.main(root.filename, self.int_order_file, self.output_file)
+        p = self.tg.return_log()
+
+        text_item = self.canvas.create_text(20, 20, anchor="nw", text=p, fill="white")
+        bbox = self.canvas.bbox(text_item)
+        rect_item = self.canvas.create_rectangle(bbox, outline="red", fill="black")
+        self.canvas.tag_raise(text_item, rect_item)
+
         self.winfo_toplevel().title("File Loaded: " + root.filename)
 
 

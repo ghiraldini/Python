@@ -12,23 +12,35 @@ import numpy as np
 class Toggl():
 
     def __init__(self):
+        # print("In init...")
+        self.log_out_str = ""
         self.welcome_msg()
 
-    @staticmethod
-    def welcome_msg():
-        print("Importing Toggle_2_SAP module :)")
+    def log_output(self, input_str):
+        self.log_out_str += input_str + "\n"
 
-    @staticmethod
-    def print_new_day(day, dayIdx):
-        print("--------------------------------------------------")
-        print("PROJECTS WORKED ON: {}".format(day))
-        print("--------------------------------------------------")
+    def return_log(self):
+        return self.log_out_str
+
+    # @staticmethod
+    def welcome_msg(self):
+        self.log_output("Importing Toggle_2_SAP module :)")
+        # print("Importing Toggle_2_SAP module :)")
+
+    # @staticmethod
+    def print_new_day(self, day, dayIdx):
+        self.log_output("--------------------------------------------------")
+        self.log_output("PROJECTS WORKED ON: {}".format(day))
+        self.log_output("--------------------------------------------------")
+        # print("--------------------------------------------------")
+        # print("PROJECTS WORKED ON: {}".format(day))
+        # print("--------------------------------------------------")
         for key, val in sap_hrs_dict.items():
             if val.__len__() < dayIdx:
                 val.append(0)
 
-    @staticmethod
-    def print_proj_details(idx, x, proj, tt, sap_map, dayIdx, new_day_flag):
+    # @staticmethod
+    def print_proj_details(self, idx, x, proj, tt, sap_map, dayIdx, new_day_flag):
         # global types, sap, time_, sap_hrs_dict
         # check if we're still on the same project
         if x + 1 < proj.size and proj[idx[x]] != proj[idx[x + 1]]:
@@ -44,7 +56,8 @@ class Toggl():
                         # 31CHTE            15010950            1.0     0       4       2       0   |
                         # 10LBR1            15011164            2.0     0       1       0       0   |
                         # ---------------------------------------------------------------------------
-                        print("TYPE: {}, PROJ ID: {}, TIME SPENT: {}".format(v, SAP, time_spent / 3600))
+                        # print("TYPE: {}, PROJ ID: {}, TIME SPENT: {}".format(v, SAP, time_spent / 3600))
+                        self.log_output("TYPE: {}, PROJ ID: {}, TIME SPENT: {}".format(v, SAP, time_spent / 3600))
                         types.append(v)
                         sap.append(SAP)
                         time_.append(time_spent / 3600)
@@ -82,9 +95,10 @@ class Toggl():
 
             tt = self.print_proj_details(idx, x, proj, tt, sap_map, dayIdx, new_day_flag)
 
-    @staticmethod
-    def map_projects(filename, sap_map):
-        print("Mapping SAP")
+    # @staticmethod
+    def map_projects(self, filename, sap_map):
+        self.log_output("Mapping SAP from Internal Order Sheet")
+        # print("Mapping SAP")
         sap_arr = []
         type_arr = []
         df = pd.read_csv(filename).rename(columns=lambda x: x.strip(","))
@@ -124,6 +138,7 @@ class Toggl():
         time_ = []
         week = {}
         sap_hrs_dict = {}
+
         # Map SAP Number to Work Type (ie 15010942 -> 31CHTE)
         # Given my Jennifer
         self.map_projects(internal_order, sap_map)
@@ -136,6 +151,6 @@ class Toggl():
         # Exported by Toggle 'Detailed weekly CSV'
         # Write to SAP CAT2 Format time sheet for copy and paste
         self.read_data(toggl_file, sap_map)
-        self.print_new_day("FRIDAY", 5)
+        # self.print_new_day("FRIDAY", 5)
 
         self.write_sap_output(output_file, sap_map)
