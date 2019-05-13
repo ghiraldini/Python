@@ -12,9 +12,8 @@ import numpy as np
 class Toggl():
 
     def __init__(self):
-        # print("In init...")
         self.log_out_str = ""
-        self.welcome_msg()
+        # self.welcome_msg()
 
     def log_output(self, input_str):
         self.log_out_str += input_str + "\n"
@@ -24,8 +23,7 @@ class Toggl():
 
     # @staticmethod
     def welcome_msg(self):
-        self.log_output("Importing Toggle_2_SAP module :)")
-        # print("Importing Toggle_2_SAP module :)")
+        self.log_output("")
 
     # @staticmethod
     def print_new_day(self, day, dayIdx):
@@ -74,6 +72,8 @@ class Toggl():
 
     # @staticmethod
     def read_data(self, filename, sap_map):
+        if error:
+            return
         df_sorted = (pd.read_csv(filename).rename(columns=lambda x: x.strip(","))).sort_values(by=['Start date', 'Client'])
         proj = df_sorted['Client']
         dur = df_sorted['Duration']
@@ -101,7 +101,16 @@ class Toggl():
         # print("Mapping SAP")
         sap_arr = []
         type_arr = []
-        df = pd.read_csv(filename).rename(columns=lambda x: x.strip(","))
+        global error
+
+        try:
+            df = pd.read_csv(filename).rename(columns=lambda x: x.strip(","))
+        except FileNotFoundError:
+            self.log_output("-----------ERROR-----------------------------------------")
+            self.log_output("Internal Order sheet not found: {}".format(filename))
+            error = 1
+            return
+
         sap_num = df['SAP_NUM']
         type = df['TYPE']
         for x in sap_num:
@@ -126,18 +135,19 @@ class Toggl():
                             out.write(str(round(i, 2)) + ", ")      # 0 1 5 0 1
                         out.write("\n")
                 except TypeError:
-                    print("Not a SAP Project Number")
+                    print("No specified SAP Project Number")
 
     # @staticmethod
     def main(self, toggl_file, internal_order, output_file):
-        print("Reading toggle file: {}".format(toggl_file))
+        # print("Reading toggle file: {}".format(toggl_file))
         sap_map = {}
-        global types, sap, time_, week, sap_hrs_dict
+        global types, sap, time_, week, sap_hrs_dict, error
         types = []
         sap = []
         time_ = []
         week = {}
         sap_hrs_dict = {}
+        error = 0
 
         # Map SAP Number to Work Type (ie 15010942 -> 31CHTE)
         # Given my Jennifer
