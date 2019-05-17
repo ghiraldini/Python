@@ -3,7 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="71315bd1-7928-47a6-ac8e-bf1372436851" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main_toggl_sap.py" beforeDir="false" afterPath="$PROJECT_DIR$/main_toggl_sap.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Internal_Order_Modified.csv" beforeDir="false" afterPath="$PROJECT_DIR$/Internal_Order_Modified.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/toggle_2_SAP.py" beforeDir="false" afterPath="$PROJECT_DIR$/toggle_2_SAP.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,24 +15,24 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="375">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/toggle_2_SAP.py">
+        <entry file="file://$PROJECT_DIR$/main_toggl_sap.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="161">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="383">
+              <caret line="88" lean-forward="true" selection-start-line="88" selection-end-line="88" />
               <folding>
-                <element signature="e#181#200#0" expanded="true" />
+                <element signature="e#181#201#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/main_toggl_sap.py">
+        <entry file="file://$PROJECT_DIR$/toggle_2_SAP.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-360">
-              <caret line="43" column="42" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+            <state relative-caret-position="420">
+              <caret line="157" column="24" selection-start-line="157" selection-start-column="24" selection-end-line="157" selection-end-column="24" />
               <folding>
-                <element signature="e#181#201#0" expanded="true" />
+                <element signature="e#181#200#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -56,8 +56,8 @@
       <list>
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_1.py" />
         <option value="$PROJECT_DIR$/../tk_demo.py" />
-        <option value="$PROJECT_DIR$/toggle_2_SAP.py" />
         <option value="$PROJECT_DIR$/main_toggl_sap.py" />
+        <option value="$PROJECT_DIR$/toggle_2_SAP.py" />
       </list>
     </option>
   </component>
@@ -73,7 +73,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -85,6 +84,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -235,26 +235,27 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-9" y="-9" width="1938" height="1060" extended-state="6" />
+    <frame x="-8" y="-8" width="1936" height="1066" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.07196563" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.11247335" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
+      <window_info anchor="bottom" id="Messages" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Debug" order="2" weight="0.35642457" />
+      <window_info anchor="bottom" id="Debug" order="2" visible="true" weight="0.35584137" />
       <window_info anchor="bottom" id="Cvs" order="3" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="4" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="5" />
-      <window_info anchor="bottom" id="Version Control" order="6" weight="0.39664805" />
+      <window_info anchor="bottom" id="Version Control" order="6" weight="0.23901394" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info anchor="bottom" id="Event Log" order="8" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="9" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
-      <window_info active="true" anchor="right" x="1028" y="264" width="689" height="599" id="Run" order="3" visible="true" weight="0.4253491" />
+      <window_info active="true" anchor="right" x="1028" y="264" width="689" height="599" id="Run" order="3" visible="true" weight="0.43017057" />
     </layout>
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -343,11 +344,6 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="PythonConfigurationType">
-        <watch expression="sap_hrs_dict" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="watch">
@@ -419,27 +415,27 @@
     </entry>
     <entry file="file://$USER_HOME$/AppData/Local/Programs/Python/Python37/Lib/tkinter/__init__.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="181">
-          <caret line="2100" selection-start-line="2100" selection-end-line="2100" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/toggle_2_SAP.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="161">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-          <folding>
-            <element signature="e#181#200#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="192">
+          <caret line="1868" selection-start-line="1868" selection-end-line="1868" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/main_toggl_sap.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-360">
-          <caret line="43" column="42" selection-start-line="43" selection-start-column="42" selection-end-line="43" selection-end-column="42" />
+        <state relative-caret-position="383">
+          <caret line="88" lean-forward="true" selection-start-line="88" selection-end-line="88" />
           <folding>
             <element signature="e#181#201#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/toggle_2_SAP.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="157" column="24" selection-start-line="157" selection-start-column="24" selection-end-line="157" selection-end-column="24" />
+          <folding>
+            <element signature="e#181#200#0" expanded="true" />
           </folding>
         </state>
       </provider>
