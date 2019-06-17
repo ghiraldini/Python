@@ -12,9 +12,8 @@ import numpy as np
 class Toggl():
 
     def __init__(self):
-        # print("In init...")
         self.log_out_str = ""
-        self.welcome_msg()
+        # self.welcome_msg()
 
     def log_output(self, input_str):
         self.log_out_str += input_str + "\n"
@@ -24,14 +23,15 @@ class Toggl():
 
     # @staticmethod
     def welcome_msg(self):
-        self.log_output("Importing Toggle_2_SAP module :)")
-        # print("Importing Toggle_2_SAP module :)")
+        self.log_output("")
 
     # @staticmethod
     def print_new_day(self, day, dayIdx):
-        self.log_output("--------------------------------------------------")
+        self.log_output("----------------------------------------------------------------------------")
         self.log_output("PROJECTS WORKED ON: {}".format(day))
-        self.log_output("--------------------------------------------------")
+        self.log_output("----------------------------------------------------------------------------")
+        self.log_output("TYPE\t\tPROJ ID\t\tTIME SPENT\tREC ITEM")
+        self.log_output("----------------------------------------------------------------------------")
         # print("--------------------------------------------------")
         # print("PROJECTS WORKED ON: {}".format(day))
         # print("--------------------------------------------------")
@@ -56,8 +56,12 @@ class Toggl():
                         # 31CHTE            15010950            1.0     0       4       2       0   |
                         # 10LBR1            15011164            2.0     0       1       0       0   |
                         # ---------------------------------------------------------------------------
-                        # print("TYPE: {}, PROJ ID: {}, TIME SPENT: {}".format(v, SAP, time_spent / 3600))
-                        self.log_output("TYPE: {}, PROJ ID: {}, TIME SPENT: {}".format(v, SAP, time_spent / 3600))
+                        # print("TYPE: {}, PROJ ID: {}, TIME SPENT: {}, REC ITEM: {}".format(
+                        #     v, SAP, time_spent / 3600, rec_map[k]))
+
+                        out_str = str(v) + '\t\t' + str(SAP) + '\t' + str(round(time_spent / 3600, 2)) + '\t\t' + str(rec_map[k])
+                        self.log_output(out_str)
+
                         types.append(v)
                         sap.append(SAP)
                         time_.append(time_spent / 3600)
@@ -74,6 +78,8 @@ class Toggl():
 
     # @staticmethod
     def read_data(self, filename, sap_map):
+        if error:
+            return
         df_sorted = (pd.read_csv(filename).rename(columns=lambda x: x.strip(","))).sort_values(by=['Start date', 'Client'])
         proj = df_sorted['Client']
         dur = df_sorted['Duration']
@@ -101,16 +107,30 @@ class Toggl():
         # print("Mapping SAP")
         sap_arr = []
         type_arr = []
-        df = pd.read_csv(filename).rename(columns=lambda x: x.strip(","))
+        rec_arr = []
+        global error
+
+        try:
+            df = pd.read_csv(filename).rename(columns=lambda x: x.strip(","))
+        except FileNotFoundError:
+            self.log_output("-----------ERROR-----------------------------------------")
+            self.log_output("Internal Order sheet not found: {}".format(filename))
+            error = 1
+            return
+
         sap_num = df['SAP_NUM']
         type = df['TYPE']
+        rec_item = df['REC_ITEM']
         for x in sap_num:
             sap_arr.append(x)
         for x in type:
             type_arr.append(x)
+        for x in rec_item:
+            rec_arr.append(x)
 
         for x in range(df['SAP_NUM'].size):
             sap_map[sap_arr[x]] = type_arr[x]
+            rec_map[sap_arr[x]] = rec_arr[x]
 
     # SAP HEADERS
     # ActTyp    RecSaleOrd  RecItm  Rec.Order   Network SOp Spl A/AType WageType    AInd    M T W T F S S
@@ -119,25 +139,41 @@ class Toggl():
         with open(out_file, "w") as out:
             for k, v in sap_hrs_dict.items():
                 try:
-                    if len(k) > 4 and np.sum(v):
-                        out.write(sap_map[str(int(k))] + ", , ,")   # 31CHTE
-                        out.write(k + ",,,,,,,,,")                  # 15010942
+                    if k > 10000000 and np.sum(v):
+                        # CHTET FORMAT
+                        out.write(str(sap_map[k]) + ", , ,")  # ActTyp
+                        out.write(str(k) + ",,,,,,,,,")                  # 15010942
                         for i in v:                                 # M T W T F
                             out.write(str(round(i, 2)) + ", ")      # 0 1 5 0 1
                         out.write("\n")
+
+                    if 1 < k < 10000000 and np.sum(v):
+                        # ORRD PROJECTS FORMAT
+                        #                # ActType, RecSales, RecItm
+                        out.write(str(sap_map[k]) + "," + str(k) + "," + str(rec_map[k]))
+                        out.write(",,,,,,,,,,")
+                        for i in v:                                 # M T W T F
+                            out.write(str(round(i, 2)) + ", ")      # 0 1 5 0 1
+                        out.write("\n")
+
+                    # else:
+                    #     print("No work for Project Number: {}".format(k))
+
                 except TypeError:
-                    print("Not a SAP Project Number")
+                    print("No specified SAP Project Number")
 
     # @staticmethod
     def main(self, toggl_file, internal_order, output_file):
-        print("Reading toggle file: {}".format(toggl_file))
+        # print("Reading toggle file: {}".format(toggl_file))
         sap_map = {}
-        global types, sap, time_, week, sap_hrs_dict
+        global types, sap, time_, week, sap_hrs_dict, error, rec_map
         types = []
         sap = []
         time_ = []
+        rec_map = {}
         week = {}
         sap_hrs_dict = {}
+        error = 0
 
         # Map SAP Number to Work Type (ie 15010942 -> 31CHTE)
         # Given my Jennifer
