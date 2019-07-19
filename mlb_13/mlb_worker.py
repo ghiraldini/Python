@@ -10,7 +10,7 @@ total_payout = 0
 count = 0
 
 # TODO: make this automatic using datetime lib
-curr_month = 6
+curr_month = 7
 
 # start in April (04) opening day
 m = 4
@@ -45,4 +45,5 @@ while m <= curr_month:
 
 end = time.time()
 
+print("Money in pot: {}".format(total_payout))
 print("Time for lookup: {} minutes".format((end - start)/60.0))
