@@ -159,8 +159,7 @@ class Toggl():
 
         # Read and Calculate Toggl Detailed Time sheet
         # Exported by Toggle 'Detailed weekly CSV'
-        # Write to SAP CAT2 Format time sheet for copy and paste
         self.read_data(toggl_file, sap_map)
-        # self.print_new_day("FRIDAY", 5)
 
+        # Write to SAP CAT2 Format time sheet for copy and paste
         self.write_sap_output(output_file, sap_map)
