@@ -32,9 +32,6 @@ class Toggl():
         self.log_output("----------------------------------------------------------------------------")
         self.log_output("TYPE\t\tPROJ ID\t\tTIME SPENT\tREC ITEM")
         self.log_output("----------------------------------------------------------------------------")
-        # print("--------------------------------------------------")
-        # print("PROJECTS WORKED ON: {}".format(day))
-        # print("--------------------------------------------------")
         for key, val in sap_hrs_dict.items():
             if val.__len__() < dayIdx:
                 val.append(0)
@@ -43,23 +40,15 @@ class Toggl():
     def print_proj_details(self, idx, x, proj, tt, sap_map, dayIdx, new_day_flag):
         # global types, sap, time_, sap_hrs_dict
         # check if we're still on the same project
-        if x + 1 < proj.size and proj[idx[x]] != proj[idx[x + 1]]:
+        if (x + 1 < proj.size and proj[idx[x]] != proj[idx[x + 1]]) or dayIdx < 5:
             (SAP, time_spent) = proj[idx[x]], tt
             if not np.isnan(SAP):
                 for k, v in sap_map.items():
                     if str(k) in str(SAP):
-                        # Create SAP formatted CAT2 time sheet
-                        # ---------------------------------------------------------------------------
-                        # REC TYPE      |   REC ORDER   |       M   |   T   |   W   |   T   |   F   |
-                        # ---------------------------------------------------------------------------
-                        # 31CHTE            15010942            2.3     0       2       1       0   |
-                        # 31CHTE            15010950            1.0     0       4       2       0   |
-                        # 10LBR1            15011164            2.0     0       1       0       0   |
-                        # ---------------------------------------------------------------------------
-                        # print("TYPE: {}, PROJ ID: {}, TIME SPENT: {}, REC ITEM: {}".format(
-                        #     v, SAP, time_spent / 3600, rec_map[k]))
-
-                        out_str = str(v) + '\t\t' + str(SAP) + '\t' + str(round(time_spent / 3600, 2)) + '\t\t' + str(rec_map[k])
+                        # out_str = str(v) + '\t\t' + str(SAP) + '\t' + str(round(time_spent / 3600, 2)) + '\t\t'
+                        # + str(rec_map[k])
+                        out_str = str(v) + '\t\t' + str(SAP) + '\t' + str(round(time_spent / 3600, 2))
+                        # print(out_str)
                         self.log_output(out_str)
 
                         types.append(v)
@@ -80,7 +69,8 @@ class Toggl():
     def read_data(self, filename, sap_map):
         if error:
             return
-        df_sorted = (pd.read_csv(filename).rename(columns=lambda x: x.strip(","))).sort_values(by=['Start date', 'Client'])
+        df_sorted = (pd.read_csv(filename).rename(columns=lambda x: x.strip(","))).sort_values(
+            by=['Start date', 'Client'])
         proj = df_sorted['Client']
         dur = df_sorted['Duration']
         s_date = df_sorted['Start date']
@@ -120,47 +110,59 @@ class Toggl():
 
         sap_num = df['SAP_NUM']
         type = df['TYPE']
-        rec_item = df['REC_ITEM']
+        # rec_item = df['REC_ITEM']
         for x in sap_num:
             sap_arr.append(x)
         for x in type:
             type_arr.append(x)
-        for x in rec_item:
-            rec_arr.append(x)
+        # for x in rec_item:
+        #     rec_arr.append(x)
 
         for x in range(df['SAP_NUM'].size):
             sap_map[sap_arr[x]] = type_arr[x]
-            rec_map[sap_arr[x]] = rec_arr[x]
+            # rec_map[sap_arr[x]] = rec_arr[x]
 
     # SAP HEADERS
     # ActTyp    RecSaleOrd  RecItm  Rec.Order   Network SOp Spl A/AType WageType    AInd    M T W T F S S
+    # Create SAP formatted CAT2 time sheet
+    # ---------------------------------------------------------------------------
+    # REC TYPE      |   REC ORDER   |       M   |   T   |   W   |   T   |   F   |
+    # ---------------------------------------------------------------------------
+    # 31CHTE            15010942            2.3     0       2       1       0   |
+    # 31CHTE            15010950            1.0     0       4       2       0   |
+    # 10LBR1            15011164            2.0     0       1       0       0   |
+    # ---------------------------------------------------------------------------
     @staticmethod
     def write_sap_output(out_file, sap_map):
         with open(out_file, "w") as out:
             for k, v in sap_hrs_dict.items():
                 try:
-                    if k > 10000000 and np.sum(v):
-                        # CHTET FORMAT
-                        out.write(str(sap_map[k]) + ", , ,")  # ActTyp
-                        out.write(str(k) + ",,,,,,,,,")                  # 15010942
-                        for i in v:                                 # M T W T F
-                            out.write(str(round(i, 2)) + ", ")      # 0 1 5 0 1
-                        out.write("\n")
+                    if k != 'TBD':
+                        if type(k) == float:
+                            print("Ignoring project: {}".format(str(k)))
+                        else:
+                            # print(k, np.sum(v))
+                            # print("Comparing {} > {}".format(int(k), 10000000))
+                            if int(k) > 10000000 and np.sum(v):
+                                # CHTET FORMAT
+                                print("Logging Proj: {} with {} hours".format(int(k), np.sum(v)))
+                                out.write(str(sap_map[k]) + ", , ,")        # ActTyp
+                                out.write(str(k) + ",,,,,,,,,")             # 15010942
+                                for i in v:                                 # M T W T F
+                                    out.write(str(round(i, 2)) + ", ")      # 0 1 5 0 1
+                                out.write("\n")
 
-                    if 1 < k < 10000000 and np.sum(v):
-                        # ORRD PROJECTS FORMAT
-                        #                # ActType, RecSales, RecItm
-                        out.write(str(sap_map[k]) + "," + str(k) + "," + str(rec_map[k]))
-                        out.write(",,,,,,,,,,")
-                        for i in v:                                 # M T W T F
-                            out.write(str(round(i, 2)) + ", ")      # 0 1 5 0 1
-                        out.write("\n")
-
-                    # else:
-                    #     print("No work for Project Number: {}".format(k))
+                            if 1 < int(k) < 10000000 and np.sum(v):
+                                # ORRD PROJECTS FORMAT
+                                #                # ActType, RecSales, RecItm
+                                out.write(str(sap_map[k]) + "," + str(k) + "," + str(rec_map[k]))
+                                out.write(",,,,,,,,,,")
+                                for i in v:                                 # M T W T F
+                                    out.write(str(round(i, 2)) + ", ")      # 0 1 5 0 1
+                                out.write("\n")
 
                 except TypeError:
-                    print("No specified SAP Project Number")
+                    print("No specified SAP Project Number", k, v)
 
     # @staticmethod
     def main(self, toggl_file, internal_order, output_file):
@@ -189,3 +191,4 @@ class Toggl():
 
         # Write to SAP CAT2 Format time sheet for copy and paste
         self.write_sap_output(output_file, sap_map)
+
