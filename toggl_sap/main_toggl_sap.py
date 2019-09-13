@@ -76,6 +76,7 @@ class Application(tk.Frame):
 
         self.output_file, ext = os.path.splitext(root.filename)
         self.output_file += "_SAP.csv"
+        
         # print("Creating SAP file...", self.output_file)
         self.tg.main(root.filename, self.int_order_file, self.output_file)
         p = self.tg.return_log()

@@ -50,7 +50,7 @@ class Application(tk.Frame):
         self.winfo_toplevel().title("MLB 13-RUN GAME")
 
         # on boot message
-        msg = "Look up all games with 13 runs in score...this will take ~12 minutes :("
+        msg = "Look up all games with 13 runs in score..."
         text_item = self.canvas.create_text(20, 20, anchor="nw",
                                             text=msg, tag=self.text_tag)
         self.canvas.tag_raise(text_item)
