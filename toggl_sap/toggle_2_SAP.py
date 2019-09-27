@@ -34,7 +34,7 @@ class Toggl():
         self.log_output("----------------------------------------------------------------------------")
         self.log_output("TYPE\t\tPROJ ID\t\tTIME SPENT\tREC ITEM")
         self.log_output("----------------------------------------------------------------------------")
-        for key, val in sap_hrs_dict.items():
+        for _, val in sap_hrs_dict.items():
             if val.__len__() < dayIdx:
                 val.append(0)
 
@@ -46,12 +46,19 @@ class Toggl():
     # global types, sap, time_, sap_hrs_dict
     # -----------------------------------------------------------
     def print_proj_details(self, idx, client, proj, tt, sap_map, dayIdx, new_day_flag):        
-        
-        # check if we're still on the same project or if its friday
-        if (client + 1 < proj.size and proj[idx[client]] != proj[idx[client + 1]]) or dayIdx == self.total_work_days:
-            
+        print("Day Indx: {}".format(dayIdx))
+
+        # if (client + 1 < proj.size):
+        #    print("Prev Proj: {}, Proj: {}, next Proj: {}".format(proj[idx[client-1]], proj[idx[client]], proj[idx[client + 1]]))
+        # else: 
+        #    print("Prev Proj: {}, Proj: {}".format(proj[idx[client-1]], proj[idx[client]]))
+        # print("Client: {}, idx size: {}, proj size: {}".format(client, idx.size, proj.size))
+
+        if (client + 1 < proj.size and proj[idx[client]] != proj[idx[client + 1]]) or \
+            (client+1 == proj.size and proj[idx[client-1]] != proj[idx[client]]):
+
             # current proj & hours worked
-            (SAP, time_spent) = proj[idx[client]], tt
+            (SAP, time_spent) = proj[idx[client]], tt   
 
             # verify number in hours worked
             if not np.isnan(SAP):
@@ -70,7 +77,7 @@ class Toggl():
 
                         hrs_arr = []
                         for client_hrs in sap_hrs_dict[k]:
-                            print("Adding: {} to Client: {}".format(client_hrs, sap_hrs_dict[k]))
+                            # print("Appending HRS: {} to Client: {}".format(client_hrs, sap_hrs_dict[k]))
                             hrs_arr.append(client_hrs)
 
                         hrs_arr.append(time_spent / 3600)
@@ -98,20 +105,23 @@ class Toggl():
         (_, _, dl) = df_sorted['Start date'].iloc[-1].split('-')
         (_, _, df) = df_sorted['Start date'].iloc[0].split('-')        
         self.total_work_days = int(dl) - int(df)
+        print("Number of days worked: {}".format(self.total_work_days))
 
         idx = df_sorted.index
         tt = 0
         dayIdx = -1
 
         for client in range(df_sorted['Client'].size):
-            print("Checking client: {}, on date: {}".format(idx[client], s_date[idx[client]]))
+            # print("Checking client: {}, on date: {}".format(idx[client], s_date[idx[client]]))
             (h, m, s) = dur[idx[client]].split(":")
+
             # New day
             if s_date[idx[client]] != s_date[idx[client-1]]:
                 dayIdx += 1
                 self.print_new_day(s_date[idx[client]], dayIdx)
                 new_day_flag = True
                 tt = int(h) * 3600 + int(m) * 60 + int(s)
+
             # Still in same day 
             else:
                 new_day_flag = False
@@ -128,7 +138,7 @@ class Toggl():
         # print("Mapping SAP")
         sap_arr = []
         type_arr = []
-        rec_arr = []
+        # rec_arr = []
         global error
 
         try:

@@ -14,7 +14,9 @@ from toggle_2_SAP import Toggl
 
 
 class Application(tk.Frame):
-
+    # -----------------------------------------------------------
+    #
+    # -----------------------------------------------------------
     def __init__(self, root):
         tk.Frame.__init__(self, root)
         self.canvas = tk.Canvas(root, width=600, height=800, borderwidth=1, background="black")
@@ -41,7 +43,9 @@ class Application(tk.Frame):
         self.int_order_file = "Internal_Order_Modified.csv"
         self.output_file = ""
 
+    # -----------------------------------------------------------
     # Create initial widgets for load/quit
+    # -----------------------------------------------------------
     def create_widgets(self):
         self.winfo_toplevel().title("Toggl to SAP")
         welcome_msg = "*** Welcome to Toggl to SAP ***\n...\n..\n.\nWaiting for input..."
@@ -63,18 +67,22 @@ class Application(tk.Frame):
                               command=self.master.destroy)
         self.quit.pack(side="right", fill=tk.BOTH)
 
+    # -----------------------------------------------------------
     # resize
+    # -----------------------------------------------------------
     def on_frame_configure(self):
         """Reset the scroll region to encompass the inner frame"""
         self.canvas.configure(scrollregion=self.canvas.bbox("all"))
 
+    # -----------------------------------------------------------
     # Bring up file import dialog
+    # -----------------------------------------------------------
     def import_data(self):
         root.filename = filedialog.askopenfilename(initialdir="/", title="Select toggle report",
                                                    filetypes=(("csv files", "*.csv"), ("all files", "*.*")))
         # print("Reading toggl report...", root.filename)
 
-        self.output_file, ext = os.path.splitext(root.filename)
+        self.output_file, _ = os.path.splitext(root.filename)
         self.output_file += "_SAP.csv"
         
         # print("Creating SAP file...", self.output_file)
@@ -88,7 +96,9 @@ class Application(tk.Frame):
 
         self.winfo_toplevel().title("File Loaded: " + root.filename)
 
-
+# -----------------------------------------------------------
+# -----------------------------------------------------------
+# -----------------------------------------------------------
 if __name__ == "__main__":
     root = tk.Tk()
     root.iconbitmap(default='favicon.ico')
