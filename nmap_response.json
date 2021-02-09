@@ -1,0 +1,49 @@
+{'nmap': 
+	{
+		'command_line': 'nmap -oX - -p 5900 192.168.1.235 p', 
+		'scaninfo': 
+			{
+				'error': [
+					'Failed to resolve "p".\r\n
+					Failed to resolve "p".\r\n
+					Failed to resolve "p".\r\n', 
+					'Failed to resolve "p".\r\n
+					Failed to resolve "p".\r\n
+					Failed to resolve "p".\r\n', 
+					'Failed to resolve "p".\r\n
+					Failed to resolve "p".\r\n
+					Failed to resolve "p".\r\n'
+				], 
+				'tcp': 
+					{
+						'method': 'syn', 
+						'services': '5900'
+					}
+			}, 
+		'scanstats': 
+			{
+				'timestr': 'Mon Dec 14 13:49:35 2020', 'elapsed': '12.73', 'uphosts': '1', 'downhosts': '0', 'totalhosts': '1'
+			}
+	}, 
+	'scan': 
+		{
+		'192.168.1.235': {
+			'hostnames': [{'name': '202000001234.attlocal.net', 'type': 'PTR'}], 
+			'addresses': {'ipv4': '192.168.1.235', 'mac': '00:0B:AB:B1:DB:FF'}, 
+			'vendor': {'00:0B:AB:B1:DB:FF': 'Advantech Technology (china)'}, 
+			'status': {'state': 'up', 'reason': 'arp-response'}, 
+			'tcp': {
+				5900: {
+					'state': 'filtered', 
+					'reason': 'no-response', 
+					'name': 'vnc', 
+					'product': '', 
+					'version': '', 
+					'extrainfo': '', 
+					'conf': '3', 
+					'cpe': ''
+				}
+			}
+		}
+	}
+}

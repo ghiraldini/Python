@@ -46,16 +46,18 @@ class Toggl():
     # global types, sap, time_, sap_hrs_dict
     # -----------------------------------------------------------
     def print_proj_details(self, idx, client, proj, tt, sap_map, dayIdx, new_day_flag):        
-        print("Day Indx: {}".format(dayIdx))
+        print("Day Indx: {}, New Day: {}".format(dayIdx, new_day_flag))
+        if (client + 1 < proj.size):
+           print("Prev Proj: {}, Curr Proj: {}, next Proj: {}".format(proj[idx[client-1]], proj[idx[client]], proj[idx[client + 1]]))
+        else: 
+           print("Prev Proj: {}, Curr Proj: {}".format(proj[idx[client-1]], proj[idx[client]]))
+        print("Client: {}, idx size: {}, proj size: {}".format(client, idx.size, proj.size))
+        
+        # TODO client-1 index will call last element in array (could lead to bug, ie last project == current proj)
 
-        # if (client + 1 < proj.size):
-        #    print("Prev Proj: {}, Proj: {}, next Proj: {}".format(proj[idx[client-1]], proj[idx[client]], proj[idx[client + 1]]))
-        # else: 
-        #    print("Prev Proj: {}, Proj: {}".format(proj[idx[client-1]], proj[idx[client]]))
-        # print("Client: {}, idx size: {}, proj size: {}".format(client, idx.size, proj.size))
-
-        if (client + 1 < proj.size and proj[idx[client]] != proj[idx[client + 1]]) or \
-            (client+1 == proj.size and proj[idx[client-1]] != proj[idx[client]]):
+        if ((client + 1 < proj.size and proj[idx[client]] != proj[idx[client + 1]]) and \
+            not new_day_flag and dayIdx != 0) or \
+            (client + 1 == proj.size and proj[idx[client-1]] != proj[idx[client]]):
 
             # current proj & hours worked
             (SAP, time_spent) = proj[idx[client]], tt   
